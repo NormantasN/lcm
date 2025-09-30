@@ -23,7 +23,7 @@ const server = http.createServer((req, res) => {
 	const parsedUrl = url.parse(req.url, true);
 	const pathName = parsedUrl.pathname;
 
-	if (pathName === 'normantas000@gmail.com' && req.method === 'GET') {
+	if (pathName === '/normantas000_gmail_com' && req.method === 'GET') {
 		const { x, y } = parsedUrl.query;
 		if (!isNaturalNumber(x) || !isNaturalNumber(y)) {
 			res.writeHead(200, { 'Content-Type': 'text/plain' });
