@@ -1,0 +1,16 @@
+{
+	"name": "lcm",
+	"version": "1.0.0",
+	"description": "LCM calculation",
+	"main": "task3.js",
+	"scripts": {
+		"start": "node task3.js",
+		"build": "echo 'No build step required'"
+	},
+	"keywords": [],
+	"author": "",
+	"license": "ISC",
+	"engines": {
+		"node": ">=14.0.0"
+	}
+}
