@@ -1,39 +1,54 @@
 const http = require('http');
 const url = require('url');
 
-function gcd(x, y) {
-	while (y !== 0) {
-		const temp = y;
-		y = x % y;
-		x = temp;
+function gcd(a, b) {
+	a = BigInt(a);
+	b = BigInt(b);
+	while (b !== 0n) {
+		let temp = b;
+		b = a % b;
+		a = temp;
 	}
-	return x;
+	return a;
 }
 
 function lcm(x, y) {
-	return (x * y) / gcd(x, y);
+	const bigX = BigInt(x);
+	const bigY = BigInt(y);
+	return (bigX * bigY) / gcd(bigX, bigY);
 }
 
 function isNaturalNumber(value) {
-	const num = Number(value);
-	return Number.isInteger(num) && num > 0;
+	if (value === undefined || value === null || value === '') {
+		return false;
+	}
+
+	if (!/^\d+$/.test(value)) {
+		return false;
+	}
+
+	try {
+		const num = BigInt(value);
+		return num > 0n;
+	} catch {
+		return false;
+	}
 }
 
 const server = http.createServer((req, res) => {
 	const parsedUrl = url.parse(req.url, true);
-	const pathName = parsedUrl.pathname;
+	const pathname = parsedUrl.pathname;
 
-	if (pathName === '/normantas000_gmail_com' && req.method === 'GET') {
+	if (pathname === '/normantas000_gmail_com' && req.method === 'GET') {
 		const { x, y } = parsedUrl.query;
+
 		if (!isNaturalNumber(x) || !isNaturalNumber(y)) {
 			res.writeHead(200, { 'Content-Type': 'text/plain' });
 			res.end('NaN');
 			return;
 		}
 
-		const numX = Number(x);
-		const numY = Number(y);
-		const result = lcm(numX, numY);
+		const result = lcm(x, y);
 
 		res.writeHead(200, { 'Content-Type': 'text/plain' });
 		res.end(result.toString());
@@ -45,5 +60,5 @@ const server = http.createServer((req, res) => {
 
 const PORT = process.env.PORT || 3000;
 server.listen(PORT, () => {
-	console.log(`Server is running on port ${PORT}`);
+	console.log(`Server running on port ${PORT}`);
 });
